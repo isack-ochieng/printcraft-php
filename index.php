@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header("location: /printcraft-customers/login.php");
+    exit;
+}
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -35,10 +43,19 @@ if (!$result) {
 <body>
 
 <div class="container my-5">
-    <h2 class="mb-4">List of Clients</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>List of Clients</h2>
+        <div>
+            <span class="me-3">Welcome, <?php echo htmlspecialchars($_SESSION['admin_username']); ?></span>
+            <a href="/printcraft-customers/logout.php" class="btn btn-outline-danger">Logout</a>
+        </div>
+    </div>
 
-    <a class="btn btn-primary mb-3" href="/printcraft-customers/create.php" role="button">New Client</a>
-
+    <div class="mb-3">
+        <a class="btn btn-primary" href="/printcraft-customers/create.php" role="button">New Client</a>
+        <a class="btn btn-success" href="/printcraft-customers/export.php" role="button">📥 Export to CSV</a>
+    </div>   
+    
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-dark">
             <tr>
